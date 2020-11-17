@@ -1,0 +1,42 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "declarationMap": true,
+        "declaration": true,
+        "composite": true,
+        "experimentalDecorators": true,
+        "lib": [
+            "ES2015",
+            "DOM",
+        ],
+        "outFile": "out/parsers.js",
+    },
+    "references": [
+        {
+            "path": "../../../feng3d"
+        },
+    ],
+    "files": [
+        // 模型解析
+        "src/parsers/OBJParser.ts",
+        "src/parsers/MTLParser.ts",
+        "src/parsers/MD5MeshParser.ts",
+        "src/parsers/MD5AnimParser.ts",
+        //war3模型
+        "src/parsers/mdl/MdlModel.ts",
+        "src/parsers/mdl/War3Model.ts",
+        "src/parsers/MDLParser.ts",
+        //
+        "src/converters/MTLConverter.ts",
+        "src/converters/OBJConverter.ts",
+        "src/converters/MD5MeshConverter.ts",
+        "src/converters/MD5AnimConverter.ts",
+        //
+        "src/loader/MTLLoader.ts",
+        "src/loader/OBJLoader.ts",
+        "src/loader/MD5Loader.ts",
+        "src/loader/MDLLoader.ts",
+    ]
+}

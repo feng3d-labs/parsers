@@ -1,0 +1,41 @@
+{
+  "bundle": {
+    "commonSourceDirectory": "..",
+    "sourceFiles": [
+      "../src/parsers/OBJParser.ts",
+      "../src/parsers/MTLParser.ts",
+      "../src/parsers/MD5MeshParser.ts",
+      "../src/parsers/MD5AnimParser.ts",
+      "../src/parsers/mdl/MdlModel.ts",
+      "../src/parsers/mdl/War3Model.ts",
+      "../src/parsers/MDLParser.ts",
+      "../src/converters/MTLConverter.ts",
+      "../src/converters/OBJConverter.ts",
+      "../src/converters/MD5MeshConverter.ts",
+      "../src/converters/MD5AnimConverter.ts",
+      "../src/loader/MTLLoader.ts",
+      "../src/loader/OBJLoader.ts",
+      "../src/loader/MD5Loader.ts",
+      "../src/loader/MDLLoader.ts"
+    ],
+    "js": {
+      "sections": [
+        {
+          "pos": 0,
+          "end": 120374,
+          "kind": "text"
+        }
+      ]
+    },
+    "dts": {
+      "sections": [
+        {
+          "pos": 0,
+          "end": 15391,
+          "kind": "text"
+        }
+      ]
+    }
+  },
+  "version": "3.9.7"
+}
