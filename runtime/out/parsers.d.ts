@@ -1,5 +1,349 @@
 declare namespace feng3d {
     /**
+     * MD5动画转换器
+     */
+    var md5AnimConverter: MD5AnimConverter;
+    /**
+     * MD5动画转换器
+     */
+    class MD5AnimConverter {
+        /**
+         * MD5动画数据转换为引擎动画数据
+         * @param md5AnimData MD5动画数据
+         * @param completed 转换完成回调
+         */
+        convert(md5AnimData: MD5AnimData, completed?: (animationClip: AnimationClip) => void): void;
+    }
+}
+declare namespace feng3d {
+    /**
+     * MD5模型转换器
+     */
+    var md5MeshConverter: MD5MeshConverter;
+    /**
+     * MD5模型转换器
+     */
+    class MD5MeshConverter {
+        /**
+         * MD5模型数据转换为游戏对象
+         * @param md5MeshData MD5模型数据
+         * @param completed 转换完成回调
+         */
+        convert(md5MeshData: MD5MeshData, completed?: (gameObject: GameObject) => void): void;
+        /**
+         * 计算最大关节数量
+         */
+        private calculateMaxJointCount;
+        /**
+         * 计算0权重关节数量
+         * @param vertex 顶点数据
+         * @param weights 关节权重数组
+         * @return
+         */
+        private countZeroWeightJoints;
+        private createSkeleton;
+        private createSkeletonJoint;
+        private createGeometry;
+    }
+}
+declare namespace feng3d {
+    /**
+     * OBJ模型MTL材质转换器
+     */
+    var mtlConverter: MTLConverter;
+    /**
+     * OBJ模型MTL材质转换器
+     */
+    class MTLConverter {
+        /**
+         * OBJ模型MTL材质原始数据转换引擎中材质对象
+         * @param mtl MTL材质原始数据
+         */
+        convert(mtl: Mtl_Mtl, completed?: (err: Error, materials: {
+            [name: string]: Material;
+        }) => void): void;
+    }
+}
+declare namespace feng3d {
+    /**
+     * OBJ模型转换器
+     */
+    var objConverter: OBJConverter;
+    /**
+     * OBJ模型转换器
+     */
+    class OBJConverter {
+        /**
+         * OBJ模型数据转换为游戏对象
+         * @param objData OBJ模型数据
+         * @param materials 材质列表
+         * @param completed 转换完成回调
+         */
+        convert(objData: OBJ_OBJData, materials: {
+            [name: string]: Material;
+        }, completed: (gameObject: GameObject) => void): void;
+    }
+}
+declare namespace feng3d {
+    /**
+     * MD5模型加载类
+     */
+    var md5Loader: MD5Loader;
+    /**
+     * MD5模型加载类
+     */
+    class MD5Loader {
+        /**
+         * 加载资源
+         * @param url   路径
+         * @param completed 加载完成回调
+         */
+        load(url: string, completed?: (gameObject: GameObject) => void): void;
+        /**
+         * 加载MD5模型动画
+         * @param url MD5模型动画资源路径
+         * @param completed 加载完成回调
+         */
+        loadAnim(url: string, completed?: (animationClip: AnimationClip) => void): void;
+    }
+}
+declare namespace feng3d {
+    /**
+     * MDL模型加载器
+     */
+    var mdlLoader: MDLLoader;
+    /**
+     * MDL模型加载器
+     */
+    class MDLLoader {
+        /**
+         * 加载MDL模型
+         * @param mdlurl MDL模型路径
+         * @param callback 加载完成回调
+         */
+        load(mdlurl: string, callback?: (gameObject: GameObject) => void): void;
+    }
+}
+declare namespace feng3d {
+    /**
+     * OBJ模型MTL材质加载器
+     */
+    var mtlLoader: MTLLoader;
+    /**
+     * OBJ模型MTL材质加载器
+     */
+    class MTLLoader {
+        /**
+         * 加载MTL材质
+         * @param path MTL材质文件路径
+         * @param completed 加载完成回调
+         */
+        load(path: string, completed?: (err: Error, materials: {
+            [name: string]: Material;
+        }) => void): void;
+    }
+}
+declare namespace feng3d {
+    /**
+     * Obj模型加载类
+     */
+    var objLoader: ObjLoader;
+    /**
+     * Obj模型加载类
+     */
+    class ObjLoader {
+        /**
+         * 加载资源
+         * @param url   路径
+         */
+        load(url: string, completed?: (gameObject: GameObject) => void): void;
+    }
+}
+declare namespace feng3d {
+    /**
+     * MD5动画解析器
+     */
+    var md5AnimParser: MD5AnimParser;
+    /**
+     * MD5动画解析器
+     */
+    class MD5AnimParser {
+        /**
+         * 解析
+         * @param context
+         */
+        parse(context: string): MD5AnimData;
+    }
+    /**
+     * 帧数据
+     */
+    type MD5_Frame = {
+        index: number;
+        components: number[];
+    };
+    /**
+     * 基础帧数据
+     */
+    type MD5_BaseFrame = {
+        /** 位置 */
+        position: number[];
+        /** 方向 */
+        orientation: number[];
+    };
+    /**
+     * 包围盒信息
+     */
+    type MD5_Bounds = {
+        /** 最小坐标 */
+        min: number[];
+        /** 最大坐标 */
+        max: number[];
+    };
+    /**
+     * 层级数据
+     */
+    type MD5_HierarchyData = {
+        /** Joint 名字 */
+        name: string;
+        /** 父结点序号 */
+        parentIndex: number;
+        /** flag */
+        flags: number;
+        /** 影响的帧数据起始索引 */
+        startIndex: number;
+    };
+    type MD5AnimData = {
+        name?: string;
+        MD5Version: number;
+        commandline: string;
+        numFrames: number;
+        numJoints: number;
+        frameRate: number;
+        numAnimatedComponents: number;
+        hierarchy: MD5_HierarchyData[];
+        bounds: MD5_Bounds[];
+        baseframe: MD5_BaseFrame[];
+        frame: MD5_Frame[];
+    };
+}
+declare namespace feng3d {
+    /**
+     * MD5模型解析器
+     */
+    var md5MeshParser: MD5MeshParser;
+    /**
+     * MD5模型解析器
+     */
+    class MD5MeshParser {
+        /**
+         * 解析
+         * @param context
+         */
+        parse(context: string): MD5MeshData;
+    }
+    /**
+     * 关节权重数据
+     */
+    type MD5_Weight = {
+        /** weight 序号 */
+        index: number;
+        /** 对应的Joint的序号 */
+        joint: number;
+        /** 作用比例 */
+        bias: number;
+        /** 位置值 */
+        pos: number[];
+    };
+    type MD5_Vertex = {
+        /** 顶点索引 */
+        index: number;
+        /** 纹理坐标u */
+        u: number;
+        /** 纹理坐标v */
+        v: number;
+        /** weight的起始序号 */
+        startWeight: number;
+        /** weight总数 */
+        countWeight: number;
+    };
+    type MD5_Mesh = {
+        shader: string;
+        numverts: number;
+        verts: MD5_Vertex[];
+        numtris: number;
+        tris: number[];
+        numweights: number;
+        weights: MD5_Weight[];
+    };
+    type MD5_Joint = {
+        name: string;
+        parentIndex: number;
+        position: number[];
+        /** 旋转数据 */
+        rotation: number[];
+    };
+    type MD5MeshData = {
+        name?: string;
+        MD5Version: number;
+        commandline: string;
+        numJoints: number;
+        numMeshes: number;
+        joints: MD5_Joint[];
+        meshs: MD5_Mesh[];
+    };
+}
+declare namespace feng3d.war3 {
+    /**
+     * war3的mdl文件解析器
+     */
+    var mdlParser: MDLParser;
+    /**
+     * war3的mdl文件解析器
+     */
+    class MDLParser {
+        /**
+         * 解析war3的mdl文件
+         * @param data MDL模型数据
+         * @param completed 完成回调
+         */
+        parse(data: string, completed?: (war3Model: War3Model) => void): void;
+    }
+}
+declare namespace feng3d {
+    /**
+     * OBJ模型MTL材质解析器
+     */
+    var mtlParser: MTLParser;
+    /**
+     * OBJ模型MTL材质解析器
+     */
+    class MTLParser {
+        /**
+         * 解析
+         * @param context
+         */
+        parser(context: string): Mtl_Mtl;
+    }
+    type Mtl_Material = {
+        name: string;
+        ka: number[];
+        kd: number[];
+        ks: number[];
+        ns: number;
+        ni: number;
+        d: number;
+        illum: number;
+        map_Bump: string;
+        map_Ka: string;
+        map_Kd: string;
+        map_Ks: string;
+    };
+    type Mtl_Mtl = {
+        [name: string]: Mtl_Material;
+    };
+}
+declare namespace feng3d {
+    /**
      * OBJ模型解析器
      */
     var objParser: OBJParser;
@@ -75,172 +419,6 @@ declare namespace feng3d {
         }[];
         /** 模型列表 */
         objs: OBJ_OBJ[];
-    };
-}
-declare namespace feng3d {
-    /**
-     * OBJ模型MTL材质解析器
-     */
-    var mtlParser: MTLParser;
-    /**
-     * OBJ模型MTL材质解析器
-     */
-    class MTLParser {
-        /**
-         * 解析
-         * @param context
-         */
-        parser(context: string): Mtl_Mtl;
-    }
-    type Mtl_Material = {
-        name: string;
-        ka: number[];
-        kd: number[];
-        ks: number[];
-        ns: number;
-        ni: number;
-        d: number;
-        illum: number;
-        map_Bump: string;
-        map_Ka: string;
-        map_Kd: string;
-        map_Ks: string;
-    };
-    type Mtl_Mtl = {
-        [name: string]: Mtl_Material;
-    };
-}
-declare namespace feng3d {
-    /**
-     * MD5模型解析器
-     */
-    var md5MeshParser: MD5MeshParser;
-    /**
-     * MD5模型解析器
-     */
-    class MD5MeshParser {
-        /**
-         * 解析
-         * @param context
-         */
-        parse(context: string): MD5MeshData;
-    }
-    /**
-     * 关节权重数据
-     */
-    type MD5_Weight = {
-        /** weight 序号 */
-        index: number;
-        /** 对应的Joint的序号 */
-        joint: number;
-        /** 作用比例 */
-        bias: number;
-        /** 位置值 */
-        pos: number[];
-    };
-    type MD5_Vertex = {
-        /** 顶点索引 */
-        index: number;
-        /** 纹理坐标u */
-        u: number;
-        /** 纹理坐标v */
-        v: number;
-        /** weight的起始序号 */
-        startWeight: number;
-        /** weight总数 */
-        countWeight: number;
-    };
-    type MD5_Mesh = {
-        shader: string;
-        numverts: number;
-        verts: MD5_Vertex[];
-        numtris: number;
-        tris: number[];
-        numweights: number;
-        weights: MD5_Weight[];
-    };
-    type MD5_Joint = {
-        name: string;
-        parentIndex: number;
-        position: number[];
-        /** 旋转数据 */
-        rotation: number[];
-    };
-    type MD5MeshData = {
-        name?: string;
-        MD5Version: number;
-        commandline: string;
-        numJoints: number;
-        numMeshes: number;
-        joints: MD5_Joint[];
-        meshs: MD5_Mesh[];
-    };
-}
-declare namespace feng3d {
-    /**
-     * MD5动画解析器
-     */
-    var md5AnimParser: MD5AnimParser;
-    /**
-     * MD5动画解析器
-     */
-    class MD5AnimParser {
-        /**
-         * 解析
-         * @param context
-         */
-        parse(context: string): MD5AnimData;
-    }
-    /**
-     * 帧数据
-     */
-    type MD5_Frame = {
-        index: number;
-        components: number[];
-    };
-    /**
-     * 基础帧数据
-     */
-    type MD5_BaseFrame = {
-        /** 位置 */
-        position: number[];
-        /** 方向 */
-        orientation: number[];
-    };
-    /**
-     * 包围盒信息
-     */
-    type MD5_Bounds = {
-        /** 最小坐标 */
-        min: number[];
-        /** 最大坐标 */
-        max: number[];
-    };
-    /**
-     * 层级数据
-     */
-    type MD5_HierarchyData = {
-        /** Joint 名字 */
-        name: string;
-        /** 父结点序号 */
-        parentIndex: number;
-        /** flag */
-        flags: number;
-        /** 影响的帧数据起始索引 */
-        startIndex: number;
-    };
-    type MD5AnimData = {
-        name?: string;
-        MD5Version: number;
-        commandline: string;
-        numFrames: number;
-        numJoints: number;
-        frameRate: number;
-        numAnimatedComponents: number;
-        hierarchy: MD5_HierarchyData[];
-        bounds: MD5_Bounds[];
-        baseframe: MD5_BaseFrame[];
-        frame: MD5_Frame[];
     };
 }
 declare namespace feng3d.war3 {
@@ -530,184 +708,6 @@ declare namespace feng3d.war3 {
         private skeletonComponent;
         getMesh(): GameObject;
         private getFBitmap;
-    }
-}
-declare namespace feng3d.war3 {
-    /**
-     * war3的mdl文件解析器
-     */
-    var mdlParser: MDLParser;
-    /**
-     * war3的mdl文件解析器
-     */
-    class MDLParser {
-        /**
-         * 解析war3的mdl文件
-         * @param data MDL模型数据
-         * @param completed 完成回调
-         */
-        parse(data: string, completed?: (war3Model: War3Model) => void): void;
-    }
-}
-declare namespace feng3d {
-    /**
-     * OBJ模型MTL材质转换器
-     */
-    var mtlConverter: MTLConverter;
-    /**
-     * OBJ模型MTL材质转换器
-     */
-    class MTLConverter {
-        /**
-         * OBJ模型MTL材质原始数据转换引擎中材质对象
-         * @param mtl MTL材质原始数据
-         */
-        convert(mtl: Mtl_Mtl, completed?: (err: Error, materials: {
-            [name: string]: Material;
-        }) => void): void;
-    }
-}
-declare namespace feng3d {
-    /**
-     * OBJ模型转换器
-     */
-    var objConverter: OBJConverter;
-    /**
-     * OBJ模型转换器
-     */
-    class OBJConverter {
-        /**
-         * OBJ模型数据转换为游戏对象
-         * @param objData OBJ模型数据
-         * @param materials 材质列表
-         * @param completed 转换完成回调
-         */
-        convert(objData: OBJ_OBJData, materials: {
-            [name: string]: Material;
-        }, completed: (gameObject: GameObject) => void): void;
-    }
-}
-declare namespace feng3d {
-    /**
-     * MD5模型转换器
-     */
-    var md5MeshConverter: MD5MeshConverter;
-    /**
-     * MD5模型转换器
-     */
-    class MD5MeshConverter {
-        /**
-         * MD5模型数据转换为游戏对象
-         * @param md5MeshData MD5模型数据
-         * @param completed 转换完成回调
-         */
-        convert(md5MeshData: MD5MeshData, completed?: (gameObject: GameObject) => void): void;
-        /**
-         * 计算最大关节数量
-         */
-        private calculateMaxJointCount;
-        /**
-         * 计算0权重关节数量
-         * @param vertex 顶点数据
-         * @param weights 关节权重数组
-         * @return
-         */
-        private countZeroWeightJoints;
-        private createSkeleton;
-        private createSkeletonJoint;
-        private createGeometry;
-    }
-}
-declare namespace feng3d {
-    /**
-     * MD5动画转换器
-     */
-    var md5AnimConverter: MD5AnimConverter;
-    /**
-     * MD5动画转换器
-     */
-    class MD5AnimConverter {
-        /**
-         * MD5动画数据转换为引擎动画数据
-         * @param md5AnimData MD5动画数据
-         * @param completed 转换完成回调
-         */
-        convert(md5AnimData: MD5AnimData, completed?: (animationClip: AnimationClip) => void): void;
-    }
-}
-declare namespace feng3d {
-    /**
-     * OBJ模型MTL材质加载器
-     */
-    var mtlLoader: MTLLoader;
-    /**
-     * OBJ模型MTL材质加载器
-     */
-    class MTLLoader {
-        /**
-         * 加载MTL材质
-         * @param path MTL材质文件路径
-         * @param completed 加载完成回调
-         */
-        load(path: string, completed?: (err: Error, materials: {
-            [name: string]: Material;
-        }) => void): void;
-    }
-}
-declare namespace feng3d {
-    /**
-     * Obj模型加载类
-     */
-    var objLoader: ObjLoader;
-    /**
-     * Obj模型加载类
-     */
-    class ObjLoader {
-        /**
-         * 加载资源
-         * @param url   路径
-         */
-        load(url: string, completed?: (gameObject: GameObject) => void): void;
-    }
-}
-declare namespace feng3d {
-    /**
-     * MD5模型加载类
-     */
-    var md5Loader: MD5Loader;
-    /**
-     * MD5模型加载类
-     */
-    class MD5Loader {
-        /**
-         * 加载资源
-         * @param url   路径
-         * @param completed 加载完成回调
-         */
-        load(url: string, completed?: (gameObject: GameObject) => void): void;
-        /**
-         * 加载MD5模型动画
-         * @param url MD5模型动画资源路径
-         * @param completed 加载完成回调
-         */
-        loadAnim(url: string, completed?: (animationClip: AnimationClip) => void): void;
-    }
-}
-declare namespace feng3d {
-    /**
-     * MDL模型加载器
-     */
-    var mdlLoader: MDLLoader;
-    /**
-     * MDL模型加载器
-     */
-    class MDLLoader {
-        /**
-         * 加载MDL模型
-         * @param mdlurl MDL模型路径
-         * @param callback 加载完成回调
-         */
-        load(mdlurl: string, callback?: (gameObject: GameObject) => void): void;
     }
 }
 //# sourceMappingURL=parsers.d.ts.map
