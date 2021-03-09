@@ -16,11 +16,6 @@
             "feng3d"
         ]
     },
-    "references": [
-        {
-            "path": "../../../feng3d"
-        },
-    ],
     "files": [
         // 模型解析
         "src/parsers/OBJParser.ts",
