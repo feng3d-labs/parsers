@@ -1005,13 +1005,13 @@ var feng3d;
             War3Model.prototype.getMesh = function () {
                 this.meshs = [];
                 this.meshs.length = this.geosets.length;
-                var container = feng3d.serialization.setValue(new feng3d.GameObject(), { name: this.model.name }).addComponent("Transform");
+                var container = feng3d.serialization.setValue(new feng3d.GameObject(), { name: this.model.name }).addComponent("Node3D");
                 var skeletonjoints = createSkeleton(this);
                 this.skeletonComponent = container.addComponent("SkeletonComponent");
                 this.skeletonComponent.joints = skeletonjoints;
                 for (var i = 0; i < this.geosets.length; i++) {
                     var geoset = this.geosets[i];
-                    var mesh = this.meshs[i] = new feng3d.GameObject().addComponent("Transform");
+                    var mesh = this.meshs[i] = new feng3d.GameObject().addComponent("Node3D");
                     // var model = mesh.addComponent("Model");
                     var model = mesh.addComponent("SkinnedMeshRenderer");
                     var geometry = new feng3d.CustomGeometry();
@@ -1028,7 +1028,7 @@ var feng3d;
                     geometry.skinWeights = skins.jointWeights0;
                     var material = this.materials[geoset.MaterialID];
                     if (!material.material) {
-                        var fBitmap = this.getFBitmap(material);
+                        var fBitmap = this.Node3D(material);
                         var image = fBitmap.image;
                         // if (image && image.length > 0)
                         // {
@@ -1048,13 +1048,13 @@ var feng3d;
                 animation.animation = animationclips[0];
                 animation.animations = animationclips;
                 //
-                container.transform.rx = 90;
-                container.transform.sx = 0.01;
-                container.transform.sy = 0.01;
-                container.transform.sz = -0.01;
+                container.node.rx = 90;
+                container.node.sx = 0.01;
+                container.node.sy = 0.01;
+                container.node.sz = -0.01;
                 return container;
             };
-            War3Model.prototype.getFBitmap = function (material) {
+            War3Model.prototype.Node3D = function (material) {
                 var TextureID = 0;
                 for (var i = 0; i < material.layers.length; i++) {
                     var layer = material.layers[i];
@@ -2430,7 +2430,7 @@ var feng3d;
          * @param completed 转换完成回调
          */
         OBJConverter.prototype.convert = function (objData, materials, completed) {
-            var object = new feng3d.GameObject().addComponent("Transform");
+            var object = new feng3d.GameObject().addComponent("Node3D");
             object.name = objData.name;
             var objs = objData.objs;
             for (var i = 0; i < objs.length; i++) {
@@ -2446,7 +2446,7 @@ var feng3d;
     feng3d.OBJConverter = OBJConverter;
     feng3d.objConverter = new OBJConverter();
     function createSubObj(objData, obj, materials) {
-        var transform = feng3d.serialization.setValue(new feng3d.GameObject(), { name: obj.name }).addComponent("Transform");
+        var transform = feng3d.serialization.setValue(new feng3d.GameObject(), { name: obj.name }).addComponent("Node3D");
         var subObjs = obj.subObjs;
         for (var i = 0; i < subObjs.length; i++) {
             var materialTransform = createMaterialObj(objData, subObjs[i], materials);
@@ -2457,7 +2457,7 @@ var feng3d;
     var _realIndices;
     var _vertexIndex;
     function createMaterialObj(obj, subObj, materials) {
-        var transform = new feng3d.GameObject().addComponent("Transform", function (component) {
+        var transform = new feng3d.GameObject().addComponent("Node3D", function (component) {
             component.gameObject.name = subObj.g || transform.name;
         });
         var model = transform.addComponent("Renderable");
@@ -2542,7 +2542,7 @@ var feng3d;
          * @param completed 转换完成回调
          */
         MD5MeshConverter.prototype.convert = function (md5MeshData, completed) {
-            var transform = new feng3d.GameObject().addComponent("Transform", function (component) {
+            var transform = new feng3d.GameObject().addComponent("Node3D", function (component) {
                 component.gameObject.name = md5MeshData.name;
             });
             transform.addComponent("Animation");
@@ -2556,7 +2556,7 @@ var feng3d;
             for (var i = 0; i < md5MeshData.meshs.length; i++) {
                 var skinSkeleton = new feng3d.SkinSkeletonTemp();
                 var geometry = this.createGeometry(md5MeshData.meshs[i], skeletonComponent, skinSkeleton);
-                var skeletonTransform = new feng3d.GameObject().addComponent("Transform");
+                var skeletonTransform = new feng3d.GameObject().addComponent("Node3D");
                 var skinnedModel = skeletonTransform.addComponent("SkinnedMeshRenderer");
                 skinnedModel.geometry = geometry;
                 skinnedModel.skinSkeleton = skinSkeleton;
@@ -2945,7 +2945,7 @@ var feng3d;
             feng3d.fs.readString(mdlurl, function (err, content) {
                 feng3d.war3.mdlParser.parse(content, function (war3Model) {
                     var showMesh = war3Model.getMesh();
-                    var transform = feng3d.serialization.setValue(new feng3d.GameObject(), { name: feng3d.pathUtils.getName(mdlurl) }).addComponent("Transform", function (transform) {
+                    var transform = feng3d.serialization.setValue(new feng3d.GameObject(), { name: feng3d.pathUtils.getName(mdlurl) }).addComponent("Node3D", function (transform) {
                         transform.children = [showMesh];
                     });
                     feng3d.globalEmitter.emit("asset.parsed", transform);

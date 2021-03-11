@@ -14,7 +14,7 @@ namespace feng3d
          * 加载资源
          * @param url   路径
          */
-        load(url: string, completed?: (transform: Transform) => void)
+        load(url: string, completed?: (transform: Node3D) => void)
         {
             var root = url.substring(0, url.lastIndexOf("/") + 1);
 

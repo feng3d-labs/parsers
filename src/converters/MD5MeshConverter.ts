@@ -16,9 +16,9 @@ namespace feng3d
          * @param md5MeshData MD5模型数据
          * @param completed 转换完成回调
          */
-        convert(md5MeshData: MD5MeshData, completed?: (transform: Transform) => void)
+        convert(md5MeshData: MD5MeshData, completed?: (transform: Node3D) => void)
         {
-            var transform = new GameObject().addComponent("Transform", (component) =>
+            var transform = new GameObject().addComponent("Node3D", (component) =>
             {
                 component.gameObject.name = md5MeshData.name;
             });
@@ -39,7 +39,7 @@ namespace feng3d
                 var skinSkeleton = new SkinSkeletonTemp();
                 var geometry = this.createGeometry(md5MeshData.meshs[i], skeletonComponent, skinSkeleton);
 
-                var skeletonTransform = new GameObject().addComponent("Transform");
+                var skeletonTransform = new GameObject().addComponent("Node3D");
 
                 var skinnedModel = skeletonTransform.addComponent("SkinnedMeshRenderer");
                 skinnedModel.geometry = geometry;

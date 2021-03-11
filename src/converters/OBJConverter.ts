@@ -16,9 +16,9 @@ namespace feng3d
          * @param materials 材质列表
          * @param completed 转换完成回调
          */
-        convert(objData: OBJ_OBJData, materials: { [name: string]: Material; }, completed: (transform: Transform) => void)
+        convert(objData: OBJ_OBJData, materials: { [name: string]: Material; }, completed: (transform: Node3D) => void)
         {
-            var object = new GameObject().addComponent("Transform");
+            var object = new GameObject().addComponent("Node3D");
             object.name = objData.name;
             var objs = objData.objs;
             for (var i = 0; i < objs.length; i++)
@@ -37,7 +37,7 @@ namespace feng3d
 
     function createSubObj(objData: OBJ_OBJData, obj: OBJ_OBJ, materials: { [name: string]: Material; })
     {
-        var transform = serialization.setValue(new GameObject(), { name: obj.name }).addComponent("Transform");
+        var transform = serialization.setValue(new GameObject(), { name: obj.name }).addComponent("Node3D");
 
         var subObjs = obj.subObjs;
         for (var i = 0; i < subObjs.length; i++)
@@ -53,7 +53,7 @@ namespace feng3d
 
     function createMaterialObj(obj: OBJ_OBJData, subObj: OBJ_SubOBJ, materials: { [name: string]: Material; })
     {
-        var transform = new GameObject().addComponent("Transform", (component) =>
+        var transform = new GameObject().addComponent("Node3D", (component) =>
         {
             component.gameObject.name = subObj.g || transform.name;
         });

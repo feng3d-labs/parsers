@@ -33,7 +33,7 @@ namespace feng3d.war3
 		//
 		//---------------------------------------
 
-		private meshs: Transform[];
+		private meshs: Node3D[];
 		private skeletonComponent: SkeletonComponent;
 
 		getMesh()
@@ -41,7 +41,7 @@ namespace feng3d.war3
 			this.meshs = [];
 			this.meshs.length = this.geosets.length;
 
-			var container = serialization.setValue(new GameObject(), { name: this.model.name }).addComponent("Transform");
+			var container = serialization.setValue(new GameObject(), { name: this.model.name }).addComponent("Node3D");
 
 			var skeletonjoints = createSkeleton(this);
 			this.skeletonComponent = container.addComponent("SkeletonComponent");
@@ -51,7 +51,7 @@ namespace feng3d.war3
 			{
 				var geoset: Geoset = this.geosets[i];
 
-				var mesh = this.meshs[i] = new GameObject().addComponent("Transform");
+				var mesh = this.meshs[i] = new GameObject().addComponent("Node3D");
 				// var model = mesh.addComponent("Model");
 				var model = mesh.addComponent("SkinnedMeshRenderer");
 
@@ -74,7 +74,7 @@ namespace feng3d.war3
 				var material: Material = this.materials[geoset.MaterialID];
 				if (!material.material)
 				{
-					var fBitmap: FBitmap = this.getFBitmap(material);
+					var fBitmap: FBitmap = this.Node3D(material);
 					var image: string = fBitmap.image;
 					// if (image && image.length > 0)
 					// {
@@ -100,14 +100,14 @@ namespace feng3d.war3
 			animation.animations = animationclips;
 
 			//
-			container.transform.rx = 90;
-			container.transform.sx = 0.01;
-			container.transform.sy = 0.01;
-			container.transform.sz = -0.01;
+			container.node.rx = 90;
+			container.node.sx = 0.01;
+			container.node.sy = 0.01;
+			container.node.sz = -0.01;
 			return container;
 		}
 
-		private getFBitmap(material: Material): FBitmap
+		private Node3D(material: Material): FBitmap
 		{
 			var TextureID = 0;
 			for (var i = 0; i < material.layers.length; i++)
