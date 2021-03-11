@@ -14,7 +14,7 @@ namespace feng3d
          * 加载资源
          * @param url   路径
          */
-        load(url: string, completed?: (gameObject: GameObject) => void)
+        load(url: string, completed?: (transform: Transform) => void)
         {
             var root = url.substring(0, url.lastIndexOf("/") + 1);
 

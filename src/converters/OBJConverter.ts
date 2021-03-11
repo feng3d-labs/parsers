@@ -16,19 +16,19 @@ namespace feng3d
          * @param materials 材质列表
          * @param completed 转换完成回调
          */
-        convert(objData: OBJ_OBJData, materials: { [name: string]: Material; }, completed: (gameObject: GameObject) => void)
+        convert(objData: OBJ_OBJData, materials: { [name: string]: Material; }, completed: (transform: Transform) => void)
         {
-            var object = new GameObject();
+            var object = new GameObject().addComponent("Transform");
             object.name = objData.name;
             var objs = objData.objs;
             for (var i = 0; i < objs.length; i++)
             {
                 var obj = objs[i];
-                var gameObject = createSubObj(objData, obj, materials);
-                object.addChild(gameObject);
+                var transform = createSubObj(objData, obj, materials);
+                object.addChild(transform);
             }
 
-            globalDispatcher.dispatch("asset.parsed", object);
+            globalEmitter.emit("asset.parsed", object);
 
             completed && completed(object);
         }
@@ -37,15 +37,15 @@ namespace feng3d
 
     function createSubObj(objData: OBJ_OBJData, obj: OBJ_OBJ, materials: { [name: string]: Material; })
     {
-        var gameObject = serialization.setValue(new GameObject(), { name: obj.name });
+        var transform = serialization.setValue(new GameObject(), { name: obj.name }).addComponent("Transform");
 
         var subObjs = obj.subObjs;
         for (var i = 0; i < subObjs.length; i++)
         {
-            var materialObj = createMaterialObj(objData, subObjs[i], materials);
-            gameObject.addChild(materialObj);
+            var materialTransform = createMaterialObj(objData, subObjs[i], materials);
+            transform.addChild(materialTransform);
         }
-        return gameObject;
+        return transform;
     }
 
     var _realIndices: string[];
@@ -53,9 +53,11 @@ namespace feng3d
 
     function createMaterialObj(obj: OBJ_OBJData, subObj: OBJ_SubOBJ, materials: { [name: string]: Material; })
     {
-        var gameObject = new GameObject();
-        gameObject.name = subObj.g || gameObject.name;
-        var model = gameObject.addComponent("Renderable");
+        var transform = new GameObject().addComponent("Transform", (component) =>
+        {
+            component.gameObject.name = subObj.g || transform.name;
+        });
+        var model = transform.addComponent("Renderable");
         if (materials && materials[subObj.material])
             model.material = materials[subObj.material];
 
@@ -88,9 +90,9 @@ namespace feng3d
         if (uvs.length > 0)
             geometry.uvs = uvs;
 
-        globalDispatcher.dispatch("asset.parsed", geometry);
+        globalEmitter.emit("asset.parsed", geometry);
 
-        return gameObject;
+        return transform;
 
         function translateVertexData(face: OBJ_Face, vertexIndex: number, vertices: Array<number>, uvs: Array<number>, indices: Array<number>, normals: Array<number>, obj: OBJ_OBJData)
         {

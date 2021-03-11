@@ -529,7 +529,7 @@ declare namespace feng3d.war3 {
         pivotPoints: Vector3[];
         private meshs;
         private skeletonComponent;
-        getMesh(): GameObject;
+        getMesh(): Transform;
         private getFBitmap;
     }
 }
@@ -585,7 +585,7 @@ declare namespace feng3d {
          */
         convert(objData: OBJ_OBJData, materials: {
             [name: string]: Material;
-        }, completed: (gameObject: GameObject) => void): void;
+        }, completed: (transform: Transform) => void): void;
     }
 }
 declare namespace feng3d {
@@ -602,7 +602,7 @@ declare namespace feng3d {
          * @param md5MeshData MD5模型数据
          * @param completed 转换完成回调
          */
-        convert(md5MeshData: MD5MeshData, completed?: (gameObject: GameObject) => void): void;
+        convert(md5MeshData: MD5MeshData, completed?: (transform: Transform) => void): void;
         /**
          * 计算最大关节数量
          */
@@ -668,7 +668,7 @@ declare namespace feng3d {
          * 加载资源
          * @param url   路径
          */
-        load(url: string, completed?: (gameObject: GameObject) => void): void;
+        load(url: string, completed?: (transform: Transform) => void): void;
     }
 }
 declare namespace feng3d {
@@ -685,7 +685,7 @@ declare namespace feng3d {
          * @param url   路径
          * @param completed 加载完成回调
          */
-        load(url: string, completed?: (gameObject: GameObject) => void): void;
+        load(url: string, completed?: (transform: Transform) => void): void;
         /**
          * 加载MD5模型动画
          * @param url MD5模型动画资源路径
@@ -708,7 +708,7 @@ declare namespace feng3d {
          * @param mdlurl MDL模型路径
          * @param callback 加载完成回调
          */
-        load(mdlurl: string, callback?: (gameObject: GameObject) => void): void;
+        load(mdlurl: string, callback?: (transform: Transform) => void): void;
     }
 }
 //# sourceMappingURL=index.d.ts.map

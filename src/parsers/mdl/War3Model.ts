@@ -33,15 +33,15 @@ namespace feng3d.war3
 		//
 		//---------------------------------------
 
-		private meshs: GameObject[];
+		private meshs: Transform[];
 		private skeletonComponent: SkeletonComponent;
 
-		getMesh(): GameObject
+		getMesh()
 		{
 			this.meshs = [];
 			this.meshs.length = this.geosets.length;
 
-			var container = serialization.setValue(new GameObject(), { name: this.model.name });
+			var container = serialization.setValue(new GameObject(), { name: this.model.name }).addComponent("Transform");
 
 			var skeletonjoints = createSkeleton(this);
 			this.skeletonComponent = container.addComponent("SkeletonComponent");
@@ -51,7 +51,7 @@ namespace feng3d.war3
 			{
 				var geoset: Geoset = this.geosets[i];
 
-				var mesh: GameObject = this.meshs[i] = new GameObject();
+				var mesh = this.meshs[i] = new GameObject().addComponent("Transform");
 				// var model = mesh.addComponent("Model");
 				var model = mesh.addComponent("SkinnedMeshRenderer");
 
@@ -83,10 +83,10 @@ namespace feng3d.war3
 					material.material = model.material = serialization.setValue(new feng3d.Material(), { name: image, renderParams: { cullFace: CullFace.FRONT } });
 					// }
 
-					globalDispatcher.dispatch("asset.parsed", material.material);
+					globalEmitter.emit("asset.parsed", material.material);
 				}
 
-				globalDispatcher.dispatch("asset.parsed", geometry);
+				globalEmitter.emit("asset.parsed", geometry);
 
 				model.geometry = geometry;
 				model.skinSkeleton = skinSkeleton;
@@ -227,7 +227,7 @@ namespace feng3d.war3
 				bone.buildAnimationclip(animationclip, __chache__, sequence.interval.start, sequence.interval.end);
 			});
 
-			globalDispatcher.dispatch("asset.parsed", animationclip);
+			globalEmitter.emit("asset.parsed", animationclip);
 
 			animationclips.push(animationclip);
 		}

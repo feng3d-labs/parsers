@@ -16,12 +16,14 @@ namespace feng3d
          * @param md5MeshData MD5模型数据
          * @param completed 转换完成回调
          */
-        convert(md5MeshData: MD5MeshData, completed?: (gameObject: GameObject) => void)
+        convert(md5MeshData: MD5MeshData, completed?: (transform: Transform) => void)
         {
-            var gameObject = new GameObject();
-            gameObject.name = md5MeshData.name;
-            gameObject.addComponent("Animation");
-            gameObject.transform.rx = -90;
+            var transform = new GameObject().addComponent("Transform", (component) =>
+            {
+                component.gameObject.name = md5MeshData.name;
+            });
+            transform.addComponent("Animation");
+            transform.rx = -90;
 
             //顶点最大关节关联数
             var _maxJointCount = this.calculateMaxJointCount(md5MeshData);
@@ -29,7 +31,7 @@ namespace feng3d
 
             var skeletonjoints = this.createSkeleton(md5MeshData.joints);
 
-            var skeletonComponent = gameObject.addComponent("SkeletonComponent");
+            var skeletonComponent = transform.addComponent("SkeletonComponent");
             skeletonComponent.joints = skeletonjoints;
 
             for (var i = 0; i < md5MeshData.meshs.length; i++)
@@ -37,17 +39,17 @@ namespace feng3d
                 var skinSkeleton = new SkinSkeletonTemp();
                 var geometry = this.createGeometry(md5MeshData.meshs[i], skeletonComponent, skinSkeleton);
 
-                var skeletonGameObject = new GameObject();
+                var skeletonTransform = new GameObject().addComponent("Transform");
 
-                var skinnedModel = skeletonGameObject.addComponent("SkinnedMeshRenderer");
+                var skinnedModel = skeletonTransform.addComponent("SkinnedMeshRenderer");
                 skinnedModel.geometry = geometry;
                 skinnedModel.skinSkeleton = skinSkeleton;
 
-                gameObject.addChild(skeletonGameObject);
+                transform.addChild(skeletonTransform);
             }
 
-            globalDispatcher.dispatch("asset.parsed", gameObject);
-            completed && completed(gameObject);
+            globalEmitter.emit("asset.parsed", transform);
+            completed && completed(transform);
         }
 
         /**
