@@ -21,7 +21,7 @@ namespace feng3d
             fs.readString(url, (err, content) =>
             {
                 var md5MeshData = md5MeshParser.parse(content);
-                md5MeshData.name = feng3d.pathUtils.getName(url);
+                md5MeshData.name = pathUtils.getName(url);
                 md5MeshConverter.convert(md5MeshData, completed);
             });
         }
@@ -36,7 +36,7 @@ namespace feng3d
             fs.readString(url, (err, content) =>
             {
                 var md5AnimData = md5AnimParser.parse(content);
-                md5AnimData.name = feng3d.pathUtils.getName(url);
+                md5AnimData.name = pathUtils.getName(url);
                 md5AnimConverter.convert(md5AnimData, completed);
             });
         }
