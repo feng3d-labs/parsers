@@ -2435,8 +2435,8 @@ var feng3d;
             var objs = objData.objs;
             for (var i = 0; i < objs.length; i++) {
                 var obj = objs[i];
-                var transform = createSubObj(objData, obj, materials);
-                object.addChild(transform);
+                var node3d = createSubObj(objData, obj, materials);
+                object.addChild(node3d);
             }
             feng3d.globalEmitter.emit("asset.parsed", object);
             completed && completed(object);
@@ -2446,21 +2446,21 @@ var feng3d;
     feng3d.OBJConverter = OBJConverter;
     feng3d.objConverter = new OBJConverter();
     function createSubObj(objData, obj, materials) {
-        var transform = feng3d.serialization.setValue(new feng3d.GameObject(), { name: obj.name }).addComponent("Node3D");
+        var node3d = feng3d.serialization.setValue(new feng3d.GameObject(), { name: obj.name }).addComponent("Node3D");
         var subObjs = obj.subObjs;
         for (var i = 0; i < subObjs.length; i++) {
             var materialTransform = createMaterialObj(objData, subObjs[i], materials);
-            transform.addChild(materialTransform);
+            node3d.addChild(materialTransform);
         }
-        return transform;
+        return node3d;
     }
     var _realIndices;
     var _vertexIndex;
     function createMaterialObj(obj, subObj, materials) {
-        var transform = new feng3d.GameObject().addComponent("Node3D", function (component) {
-            component.gameObject.name = subObj.g || transform.name;
+        var node3d = new feng3d.GameObject().addComponent("Node3D", function (component) {
+            component.gameObject.name = subObj.g || node3d.name;
         });
-        var model = transform.addComponent("Renderable");
+        var model = node3d.addComponent("Renderable");
         if (materials && materials[subObj.material])
             model.material = materials[subObj.material];
         var geometry = model.geometry = new feng3d.CustomGeometry();
@@ -2488,7 +2488,7 @@ var feng3d;
         if (uvs.length > 0)
             geometry.uvs = uvs;
         feng3d.globalEmitter.emit("asset.parsed", geometry);
-        return transform;
+        return node3d;
         function translateVertexData(face, vertexIndex, vertices, uvs, indices, normals, obj) {
             var index;
             var vertex;
@@ -2542,16 +2542,16 @@ var feng3d;
          * @param completed 转换完成回调
          */
         MD5MeshConverter.prototype.convert = function (md5MeshData, completed) {
-            var transform = new feng3d.GameObject().addComponent("Node3D", function (component) {
+            var node3d = new feng3d.GameObject().addComponent("Node3D", function (component) {
                 component.gameObject.name = md5MeshData.name;
             });
-            transform.addComponent("Animation");
-            transform.rx = -90;
+            node3d.addComponent("Animation");
+            node3d.rx = -90;
             //顶点最大关节关联数
             var _maxJointCount = this.calculateMaxJointCount(md5MeshData);
             console.assert(_maxJointCount <= 8, "顶点最大关节关联数最多支持8个");
             var skeletonjoints = this.createSkeleton(md5MeshData.joints);
-            var skeletonComponent = transform.addComponent("SkeletonComponent");
+            var skeletonComponent = node3d.addComponent("SkeletonComponent");
             skeletonComponent.joints = skeletonjoints;
             for (var i = 0; i < md5MeshData.meshs.length; i++) {
                 var skinSkeleton = new feng3d.SkinSkeletonTemp();
@@ -2560,10 +2560,10 @@ var feng3d;
                 var skinnedModel = skeletonTransform.addComponent("SkinnedMeshRenderer");
                 skinnedModel.geometry = geometry;
                 skinnedModel.skinSkeleton = skinSkeleton;
-                transform.addChild(skeletonTransform);
+                node3d.addChild(skeletonTransform);
             }
-            feng3d.globalEmitter.emit("asset.parsed", transform);
-            completed && completed(transform);
+            feng3d.globalEmitter.emit("asset.parsed", node3d);
+            completed && completed(node3d);
         };
         /**
          * 计算最大关节数量
@@ -2945,11 +2945,11 @@ var feng3d;
             feng3d.fs.readString(mdlurl, function (err, content) {
                 feng3d.war3.mdlParser.parse(content, function (war3Model) {
                     var showMesh = war3Model.getMesh();
-                    var transform = feng3d.serialization.setValue(new feng3d.GameObject(), { name: feng3d.pathUtils.getName(mdlurl) }).addComponent("Node3D", function (transform) {
-                        transform.children = [showMesh];
+                    var node3d = feng3d.serialization.setValue(new feng3d.GameObject(), { name: feng3d.pathUtils.getName(mdlurl) }).addComponent("Node3D", function (node3d) {
+                        node3d.children = [showMesh];
                     });
-                    feng3d.globalEmitter.emit("asset.parsed", transform);
-                    callback && callback(transform);
+                    feng3d.globalEmitter.emit("asset.parsed", node3d);
+                    callback && callback(node3d);
                 });
             });
         };

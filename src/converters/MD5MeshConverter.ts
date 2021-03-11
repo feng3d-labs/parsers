@@ -16,14 +16,14 @@ namespace feng3d
          * @param md5MeshData MD5模型数据
          * @param completed 转换完成回调
          */
-        convert(md5MeshData: MD5MeshData, completed?: (transform: Node3D) => void)
+        convert(md5MeshData: MD5MeshData, completed?: (node3d: Node3D) => void)
         {
-            var transform = new GameObject().addComponent("Node3D", (component) =>
+            var node3d = new GameObject().addComponent("Node3D", (component) =>
             {
                 component.gameObject.name = md5MeshData.name;
             });
-            transform.addComponent("Animation");
-            transform.rx = -90;
+            node3d.addComponent("Animation");
+            node3d.rx = -90;
 
             //顶点最大关节关联数
             var _maxJointCount = this.calculateMaxJointCount(md5MeshData);
@@ -31,7 +31,7 @@ namespace feng3d
 
             var skeletonjoints = this.createSkeleton(md5MeshData.joints);
 
-            var skeletonComponent = transform.addComponent("SkeletonComponent");
+            var skeletonComponent = node3d.addComponent("SkeletonComponent");
             skeletonComponent.joints = skeletonjoints;
 
             for (var i = 0; i < md5MeshData.meshs.length; i++)
@@ -45,11 +45,11 @@ namespace feng3d
                 skinnedModel.geometry = geometry;
                 skinnedModel.skinSkeleton = skinSkeleton;
 
-                transform.addChild(skeletonTransform);
+                node3d.addChild(skeletonTransform);
             }
 
-            globalEmitter.emit("asset.parsed", transform);
-            completed && completed(transform);
+            globalEmitter.emit("asset.parsed", node3d);
+            completed && completed(node3d);
         }
 
         /**

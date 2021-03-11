@@ -16,7 +16,7 @@ namespace feng3d
          * @param url   路径
          * @param completed 加载完成回调
          */
-        load(url: string, completed?: (transform: Node3D) => void)
+        load(url: string, completed?: (node3d: Node3D) => void)
         {
             fs.readString(url, (err, content) =>
             {

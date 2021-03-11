@@ -16,7 +16,7 @@ namespace feng3d
          * @param materials 材质列表
          * @param completed 转换完成回调
          */
-        convert(objData: OBJ_OBJData, materials: { [name: string]: Material; }, completed: (transform: Node3D) => void)
+        convert(objData: OBJ_OBJData, materials: { [name: string]: Material; }, completed: (node3d: Node3D) => void)
         {
             var object = new GameObject().addComponent("Node3D");
             object.name = objData.name;
@@ -24,8 +24,8 @@ namespace feng3d
             for (var i = 0; i < objs.length; i++)
             {
                 var obj = objs[i];
-                var transform = createSubObj(objData, obj, materials);
-                object.addChild(transform);
+                var node3d = createSubObj(objData, obj, materials);
+                object.addChild(node3d);
             }
 
             globalEmitter.emit("asset.parsed", object);
@@ -37,15 +37,15 @@ namespace feng3d
 
     function createSubObj(objData: OBJ_OBJData, obj: OBJ_OBJ, materials: { [name: string]: Material; })
     {
-        var transform = serialization.setValue(new GameObject(), { name: obj.name }).addComponent("Node3D");
+        var node3d = serialization.setValue(new GameObject(), { name: obj.name }).addComponent("Node3D");
 
         var subObjs = obj.subObjs;
         for (var i = 0; i < subObjs.length; i++)
         {
             var materialTransform = createMaterialObj(objData, subObjs[i], materials);
-            transform.addChild(materialTransform);
+            node3d.addChild(materialTransform);
         }
-        return transform;
+        return node3d;
     }
 
     var _realIndices: string[];
@@ -53,11 +53,11 @@ namespace feng3d
 
     function createMaterialObj(obj: OBJ_OBJData, subObj: OBJ_SubOBJ, materials: { [name: string]: Material; })
     {
-        var transform = new GameObject().addComponent("Node3D", (component) =>
+        var node3d = new GameObject().addComponent("Node3D", (component) =>
         {
-            component.gameObject.name = subObj.g || transform.name;
+            component.gameObject.name = subObj.g || node3d.name;
         });
-        var model = transform.addComponent("Renderable");
+        var model = node3d.addComponent("Renderable");
         if (materials && materials[subObj.material])
             model.material = materials[subObj.material];
 
@@ -92,7 +92,7 @@ namespace feng3d
 
         globalEmitter.emit("asset.parsed", geometry);
 
-        return transform;
+        return node3d;
 
         function translateVertexData(face: OBJ_Face, vertexIndex: number, vertices: Array<number>, uvs: Array<number>, indices: Array<number>, normals: Array<number>, obj: OBJ_OBJData)
         {
