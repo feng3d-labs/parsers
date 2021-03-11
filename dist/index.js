@@ -1048,10 +1048,10 @@ var feng3d;
                 animation.animation = animationclips[0];
                 animation.animations = animationclips;
                 //
-                container.node.rx = 90;
-                container.node.sx = 0.01;
-                container.node.sy = 0.01;
-                container.node.sz = -0.01;
+                container.node3d.rx = 90;
+                container.node3d.sx = 0.01;
+                container.node3d.sy = 0.01;
+                container.node3d.sz = -0.01;
                 return container;
             };
             War3Model.prototype.Node3D = function (material) {
