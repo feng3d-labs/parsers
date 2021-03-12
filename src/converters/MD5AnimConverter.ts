@@ -94,7 +94,7 @@ namespace feng3d
                     eulers.scaleNumber(180 / Math.PI);
 
                     var path: PropertyClipPath = [
-                        [PropertyClipPathItemType.GameObject, hierarchy.name],
+                        [PropertyClipPathItemType.Entity, hierarchy.name],
                         [PropertyClipPathItemType.Component, "Transform"],
                     ];
 

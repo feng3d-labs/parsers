@@ -23,7 +23,7 @@ namespace feng3d
                 {
                     var showMesh = war3Model.getMesh();
 
-                    var node3d = serialization.setValue(new GameObject(), { name: pathUtils.getName(mdlurl) }).addComponent("Node3D", (node3d) =>
+                    var node3d = serialization.setValue(new Entity(), { name: pathUtils.getName(mdlurl) }).addComponent("Node3D", (node3d) =>
                     {
                         node3d.children = [showMesh];
                     });

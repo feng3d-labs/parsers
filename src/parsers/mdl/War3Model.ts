@@ -41,7 +41,7 @@ namespace feng3d.war3
 			this.meshs = [];
 			this.meshs.length = this.geosets.length;
 
-			var container = serialization.setValue(new GameObject(), { name: this.model.name }).addComponent("Node3D");
+			var container = serialization.setValue(new Entity(), { name: this.model.name }).addComponent("Node3D");
 
 			var skeletonjoints = createSkeleton(this);
 			this.skeletonComponent = container.addComponent("SkeletonComponent");
@@ -51,7 +51,7 @@ namespace feng3d.war3
 			{
 				var geoset: Geoset = this.geosets[i];
 
-				var mesh = this.meshs[i] = new GameObject().addComponent("Node3D");
+				var mesh = this.meshs[i] = new Entity().addComponent("Node3D");
 				// var model = mesh.addComponent("Model");
 				var model = mesh.addComponent("SkinnedMeshRenderer");
 

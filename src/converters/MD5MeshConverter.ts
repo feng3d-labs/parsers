@@ -18,9 +18,9 @@ namespace feng3d
          */
         convert(md5MeshData: MD5MeshData, completed?: (node3d: Node3D) => void)
         {
-            var node3d = new GameObject().addComponent("Node3D", (component) =>
+            var node3d = new Entity().addComponent("Node3D", (component) =>
             {
-                component.gameObject.name = md5MeshData.name;
+                component.entity.name = md5MeshData.name;
             });
             node3d.addComponent("Animation");
             node3d.rx = -90;
@@ -39,7 +39,7 @@ namespace feng3d
                 var skinSkeleton = new SkinSkeletonTemp();
                 var geometry = this.createGeometry(md5MeshData.meshs[i], skeletonComponent, skinSkeleton);
 
-                var skeletonTransform = new GameObject().addComponent("Node3D");
+                var skeletonTransform = new Entity().addComponent("Node3D");
 
                 var skinnedModel = skeletonTransform.addComponent("SkinnedMeshRenderer");
                 skinnedModel.geometry = geometry;

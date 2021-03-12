@@ -189,7 +189,7 @@ namespace feng3d.war3
 		buildAnimationclip(animationclip: AnimationClip, __chache__: { [key: string]: PropertyClip }, start: number, end: number)
 		{
 			var path: PropertyClipPath = [
-				[PropertyClipPathItemType.GameObject, this.name],
+				[PropertyClipPathItemType.Entity, this.name],
 				[PropertyClipPathItemType.Component, "Transform"],
 			];
 

@@ -639,7 +639,7 @@ var feng3d;
             };
             BoneObject.prototype.buildAnimationclip = function (animationclip, __chache__, start, end) {
                 var path = [
-                    [feng3d.PropertyClipPathItemType.GameObject, this.name],
+                    [feng3d.PropertyClipPathItemType.Entity, this.name],
                     [feng3d.PropertyClipPathItemType.Component, "Transform"],
                 ];
                 if (this.Scaling.scalings.length > 0) {
@@ -1005,13 +1005,13 @@ var feng3d;
             War3Model.prototype.getMesh = function () {
                 this.meshs = [];
                 this.meshs.length = this.geosets.length;
-                var container = feng3d.serialization.setValue(new feng3d.GameObject(), { name: this.model.name }).addComponent("Node3D");
+                var container = feng3d.serialization.setValue(new feng3d.Entity(), { name: this.model.name }).addComponent("Node3D");
                 var skeletonjoints = createSkeleton(this);
                 this.skeletonComponent = container.addComponent("SkeletonComponent");
                 this.skeletonComponent.joints = skeletonjoints;
                 for (var i = 0; i < this.geosets.length; i++) {
                     var geoset = this.geosets[i];
-                    var mesh = this.meshs[i] = new feng3d.GameObject().addComponent("Node3D");
+                    var mesh = this.meshs[i] = new feng3d.Entity().addComponent("Node3D");
                     // var model = mesh.addComponent("Model");
                     var model = mesh.addComponent("SkinnedMeshRenderer");
                     var geometry = new feng3d.CustomGeometry();
@@ -2430,7 +2430,7 @@ var feng3d;
          * @param completed 转换完成回调
          */
         OBJConverter.prototype.convert = function (objData, materials, completed) {
-            var object = new feng3d.GameObject().addComponent("Node3D");
+            var object = new feng3d.Entity().addComponent("Node3D");
             object.name = objData.name;
             var objs = objData.objs;
             for (var i = 0; i < objs.length; i++) {
@@ -2446,7 +2446,7 @@ var feng3d;
     feng3d.OBJConverter = OBJConverter;
     feng3d.objConverter = new OBJConverter();
     function createSubObj(objData, obj, materials) {
-        var node3d = feng3d.serialization.setValue(new feng3d.GameObject(), { name: obj.name }).addComponent("Node3D");
+        var node3d = feng3d.serialization.setValue(new feng3d.Entity(), { name: obj.name }).addComponent("Node3D");
         var subObjs = obj.subObjs;
         for (var i = 0; i < subObjs.length; i++) {
             var materialTransform = createMaterialObj(objData, subObjs[i], materials);
@@ -2457,8 +2457,8 @@ var feng3d;
     var _realIndices;
     var _vertexIndex;
     function createMaterialObj(obj, subObj, materials) {
-        var node3d = new feng3d.GameObject().addComponent("Node3D", function (component) {
-            component.gameObject.name = subObj.g || node3d.name;
+        var node3d = new feng3d.Entity().addComponent("Node3D", function (component) {
+            component.entity.name = subObj.g || node3d.name;
         });
         var model = node3d.addComponent("Renderable");
         if (materials && materials[subObj.material])
@@ -2542,8 +2542,8 @@ var feng3d;
          * @param completed 转换完成回调
          */
         MD5MeshConverter.prototype.convert = function (md5MeshData, completed) {
-            var node3d = new feng3d.GameObject().addComponent("Node3D", function (component) {
-                component.gameObject.name = md5MeshData.name;
+            var node3d = new feng3d.Entity().addComponent("Node3D", function (component) {
+                component.entity.name = md5MeshData.name;
             });
             node3d.addComponent("Animation");
             node3d.rx = -90;
@@ -2556,7 +2556,7 @@ var feng3d;
             for (var i = 0; i < md5MeshData.meshs.length; i++) {
                 var skinSkeleton = new feng3d.SkinSkeletonTemp();
                 var geometry = this.createGeometry(md5MeshData.meshs[i], skeletonComponent, skinSkeleton);
-                var skeletonTransform = new feng3d.GameObject().addComponent("Node3D");
+                var skeletonTransform = new feng3d.Entity().addComponent("Node3D");
                 var skinnedModel = skeletonTransform.addComponent("SkinnedMeshRenderer");
                 skinnedModel.geometry = geometry;
                 skinnedModel.skinSkeleton = skinSkeleton;
@@ -2798,7 +2798,7 @@ var feng3d;
                     var eulers = orientation.toEulerAngles();
                     eulers.scaleNumber(180 / Math.PI);
                     var path = [
-                        [feng3d.PropertyClipPathItemType.GameObject, hierarchy.name],
+                        [feng3d.PropertyClipPathItemType.Entity, hierarchy.name],
                         [feng3d.PropertyClipPathItemType.Component, "Transform"],
                     ];
                     var time = (frameData.index / md5AnimData.frameRate) * 1000;
@@ -2945,7 +2945,7 @@ var feng3d;
             feng3d.fs.readString(mdlurl, function (err, content) {
                 feng3d.war3.mdlParser.parse(content, function (war3Model) {
                     var showMesh = war3Model.getMesh();
-                    var node3d = feng3d.serialization.setValue(new feng3d.GameObject(), { name: feng3d.pathUtils.getName(mdlurl) }).addComponent("Node3D", function (node3d) {
+                    var node3d = feng3d.serialization.setValue(new feng3d.Entity(), { name: feng3d.pathUtils.getName(mdlurl) }).addComponent("Node3D", function (node3d) {
                         node3d.children = [showMesh];
                     });
                     feng3d.globalEmitter.emit("asset.parsed", node3d);
