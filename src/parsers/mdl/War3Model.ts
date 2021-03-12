@@ -41,19 +41,19 @@ namespace feng3d.war3
 			this.meshs = [];
 			this.meshs.length = this.geosets.length;
 
-			var container = serialization.setValue(new Entity(), { name: this.model.name }).addComponent("Node3D");
+			var container = serialization.setValue(new Entity(), { name: this.model.name }).addComponent(Node3D);
 
 			var skeletonjoints = createSkeleton(this);
-			this.skeletonComponent = container.addComponent("SkeletonComponent");
+			this.skeletonComponent = container.addComponent(SkeletonComponent);
 			this.skeletonComponent.joints = skeletonjoints;
 
 			for (var i: number = 0; i < this.geosets.length; i++)
 			{
 				var geoset: Geoset = this.geosets[i];
 
-				var mesh = this.meshs[i] = new Entity().addComponent("Node3D");
-				// var model = mesh.addComponent("Model");
-				var model = mesh.addComponent("SkinnedMeshRenderer");
+				var mesh = this.meshs[i] = new Entity().addComponent(Node3D);
+				// var model = mesh.addComponent(Model);
+				var model = mesh.addComponent(SkinnedMeshRenderer);
 
 				var geometry: CustomGeometry = new CustomGeometry();
 				geometry.positions = geoset.Vertices;
@@ -95,7 +95,7 @@ namespace feng3d.war3
 			}
 
 			var animationclips = createAnimationClips(this);
-			var animation = container.addComponent("Animation");
+			var animation = container.addComponent(Animation);
 			animation.animation = animationclips[0]
 			animation.animations = animationclips;
 

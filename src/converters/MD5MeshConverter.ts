@@ -18,11 +18,11 @@ namespace feng3d
          */
         convert(md5MeshData: MD5MeshData, completed?: (node3d: Node3D) => void)
         {
-            var node3d = new Entity().addComponent("Node3D", (component) =>
+            var node3d = new Entity().addComponent(Node3D, (component) =>
             {
                 component.entity.name = md5MeshData.name;
             });
-            node3d.addComponent("Animation");
+            node3d.addComponent(Animation);
             node3d.rx = -90;
 
             //顶点最大关节关联数
@@ -31,7 +31,7 @@ namespace feng3d
 
             var skeletonjoints = this.createSkeleton(md5MeshData.joints);
 
-            var skeletonComponent = node3d.addComponent("SkeletonComponent");
+            var skeletonComponent = node3d.addComponent(SkeletonComponent);
             skeletonComponent.joints = skeletonjoints;
 
             for (var i = 0; i < md5MeshData.meshs.length; i++)
@@ -39,9 +39,9 @@ namespace feng3d
                 var skinSkeleton = new SkinSkeletonTemp();
                 var geometry = this.createGeometry(md5MeshData.meshs[i], skeletonComponent, skinSkeleton);
 
-                var skeletonTransform = new Entity().addComponent("Node3D");
+                var skeletonTransform = new Entity().addComponent(Node3D);
 
-                var skinnedModel = skeletonTransform.addComponent("SkinnedMeshRenderer");
+                var skinnedModel = skeletonTransform.addComponent(SkinnedMeshRenderer);
                 skinnedModel.geometry = geometry;
                 skinnedModel.skinSkeleton = skinSkeleton;
 

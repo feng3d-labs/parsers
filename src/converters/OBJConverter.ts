@@ -18,7 +18,7 @@ namespace feng3d
          */
         convert(objData: OBJ_OBJData, materials: { [name: string]: Material; }, completed: (node3d: Node3D) => void)
         {
-            var object = new Entity().addComponent("Node3D");
+            var object = new Entity().addComponent(Node3D);
             object.name = objData.name;
             var objs = objData.objs;
             for (var i = 0; i < objs.length; i++)
@@ -37,7 +37,7 @@ namespace feng3d
 
     function createSubObj(objData: OBJ_OBJData, obj: OBJ_OBJ, materials: { [name: string]: Material; })
     {
-        var node3d = serialization.setValue(new Entity(), { name: obj.name }).addComponent("Node3D");
+        var node3d = serialization.setValue(new Entity(), { name: obj.name }).addComponent(Node3D);
 
         var subObjs = obj.subObjs;
         for (var i = 0; i < subObjs.length; i++)
@@ -53,11 +53,11 @@ namespace feng3d
 
     function createMaterialObj(obj: OBJ_OBJData, subObj: OBJ_SubOBJ, materials: { [name: string]: Material; })
     {
-        var node3d = new Entity().addComponent("Node3D", (component) =>
+        var node3d = new Entity().addComponent(Node3D, (component) =>
         {
             component.entity.name = subObj.g || node3d.name;
         });
-        var model = node3d.addComponent("Renderable");
+        var model = node3d.addComponent(Renderable);
         if (materials && materials[subObj.material])
             model.material = materials[subObj.material];
 
