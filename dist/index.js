@@ -1005,15 +1005,15 @@ var feng3d;
             War3Model.prototype.getMesh = function () {
                 this.meshs = [];
                 this.meshs.length = this.geosets.length;
-                var container = feng3d.serialization.setValue(new feng3d.Entity(), { name: this.model.name }).addComponent("Node3D");
+                var container = feng3d.serialization.setValue(new feng3d.Entity(), { name: this.model.name }).addComponent(feng3d.Node3D);
                 var skeletonjoints = createSkeleton(this);
-                this.skeletonComponent = container.addComponent("SkeletonComponent");
+                this.skeletonComponent = container.addComponent(feng3d.SkeletonComponent);
                 this.skeletonComponent.joints = skeletonjoints;
                 for (var i = 0; i < this.geosets.length; i++) {
                     var geoset = this.geosets[i];
-                    var mesh = this.meshs[i] = new feng3d.Entity().addComponent("Node3D");
-                    // var model = mesh.addComponent("Model");
-                    var model = mesh.addComponent("SkinnedMeshRenderer");
+                    var mesh = this.meshs[i] = new feng3d.Entity().addComponent(feng3d.Node3D);
+                    // var model = mesh.addComponent(Model);
+                    var model = mesh.addComponent(feng3d.SkinnedMeshRenderer);
                     var geometry = new feng3d.CustomGeometry();
                     geometry.positions = geoset.Vertices;
                     geometry.uvs = geoset.TVertices;
@@ -1044,7 +1044,7 @@ var feng3d;
                     container.addChild(mesh);
                 }
                 var animationclips = createAnimationClips(this);
-                var animation = container.addComponent("Animation");
+                var animation = container.addComponent(feng3d.Animation);
                 animation.animation = animationclips[0];
                 animation.animations = animationclips;
                 //
@@ -2430,7 +2430,7 @@ var feng3d;
          * @param completed 转换完成回调
          */
         OBJConverter.prototype.convert = function (objData, materials, completed) {
-            var object = new feng3d.Entity().addComponent("Node3D");
+            var object = new feng3d.Entity().addComponent(feng3d.Node3D);
             object.name = objData.name;
             var objs = objData.objs;
             for (var i = 0; i < objs.length; i++) {
@@ -2446,7 +2446,7 @@ var feng3d;
     feng3d.OBJConverter = OBJConverter;
     feng3d.objConverter = new OBJConverter();
     function createSubObj(objData, obj, materials) {
-        var node3d = feng3d.serialization.setValue(new feng3d.Entity(), { name: obj.name }).addComponent("Node3D");
+        var node3d = feng3d.serialization.setValue(new feng3d.Entity(), { name: obj.name }).addComponent(feng3d.Node3D);
         var subObjs = obj.subObjs;
         for (var i = 0; i < subObjs.length; i++) {
             var materialTransform = createMaterialObj(objData, subObjs[i], materials);
@@ -2457,10 +2457,10 @@ var feng3d;
     var _realIndices;
     var _vertexIndex;
     function createMaterialObj(obj, subObj, materials) {
-        var node3d = new feng3d.Entity().addComponent("Node3D", function (component) {
+        var node3d = new feng3d.Entity().addComponent(feng3d.Node3D, function (component) {
             component.entity.name = subObj.g || node3d.name;
         });
-        var model = node3d.addComponent("Renderable");
+        var model = node3d.addComponent(feng3d.Renderable);
         if (materials && materials[subObj.material])
             model.material = materials[subObj.material];
         var geometry = model.geometry = new feng3d.CustomGeometry();
@@ -2542,22 +2542,22 @@ var feng3d;
          * @param completed 转换完成回调
          */
         MD5MeshConverter.prototype.convert = function (md5MeshData, completed) {
-            var node3d = new feng3d.Entity().addComponent("Node3D", function (component) {
+            var node3d = new feng3d.Entity().addComponent(feng3d.Node3D, function (component) {
                 component.entity.name = md5MeshData.name;
             });
-            node3d.addComponent("Animation");
+            node3d.addComponent(feng3d.Animation);
             node3d.rx = -90;
             //顶点最大关节关联数
             var _maxJointCount = this.calculateMaxJointCount(md5MeshData);
             console.assert(_maxJointCount <= 8, "顶点最大关节关联数最多支持8个");
             var skeletonjoints = this.createSkeleton(md5MeshData.joints);
-            var skeletonComponent = node3d.addComponent("SkeletonComponent");
+            var skeletonComponent = node3d.addComponent(feng3d.SkeletonComponent);
             skeletonComponent.joints = skeletonjoints;
             for (var i = 0; i < md5MeshData.meshs.length; i++) {
                 var skinSkeleton = new feng3d.SkinSkeletonTemp();
                 var geometry = this.createGeometry(md5MeshData.meshs[i], skeletonComponent, skinSkeleton);
-                var skeletonTransform = new feng3d.Entity().addComponent("Node3D");
-                var skinnedModel = skeletonTransform.addComponent("SkinnedMeshRenderer");
+                var skeletonTransform = new feng3d.Entity().addComponent(feng3d.Node3D);
+                var skinnedModel = skeletonTransform.addComponent(feng3d.SkinnedMeshRenderer);
                 skinnedModel.geometry = geometry;
                 skinnedModel.skinSkeleton = skinSkeleton;
                 node3d.addChild(skeletonTransform);
@@ -2945,7 +2945,7 @@ var feng3d;
             feng3d.fs.readString(mdlurl, function (err, content) {
                 feng3d.war3.mdlParser.parse(content, function (war3Model) {
                     var showMesh = war3Model.getMesh();
-                    var node3d = feng3d.serialization.setValue(new feng3d.Entity(), { name: feng3d.pathUtils.getName(mdlurl) }).addComponent("Node3D", function (node3d) {
+                    var node3d = feng3d.serialization.setValue(new feng3d.Entity(), { name: feng3d.pathUtils.getName(mdlurl) }).addComponent(feng3d.Node3D, function (node3d) {
                         node3d.children = [showMesh];
                     });
                     feng3d.globalEmitter.emit("asset.parsed", node3d);
