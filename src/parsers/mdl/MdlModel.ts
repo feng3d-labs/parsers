@@ -190,7 +190,7 @@ namespace feng3d.war3
 		{
 			var path: PropertyClipPath = [
 				[PropertyClipPathItemType.Entity, this.name],
-				[PropertyClipPathItemType.Component, "Transform"],
+				[PropertyClipPathItemType.Component, "Node3D"],
 			];
 
 			if (this.Scaling.scalings.length > 0)

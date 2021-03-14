@@ -640,7 +640,7 @@ var feng3d;
             BoneObject.prototype.buildAnimationclip = function (animationclip, __chache__, start, end) {
                 var path = [
                     [feng3d.PropertyClipPathItemType.Entity, this.name],
-                    [feng3d.PropertyClipPathItemType.Component, "Transform"],
+                    [feng3d.PropertyClipPathItemType.Component, "Node3D"],
                 ];
                 if (this.Scaling.scalings.length > 0) {
                     var scalings = this.Scaling.scalings;
@@ -2799,7 +2799,7 @@ var feng3d;
                     eulers.scaleNumber(180 / Math.PI);
                     var path = [
                         [feng3d.PropertyClipPathItemType.Entity, hierarchy.name],
-                        [feng3d.PropertyClipPathItemType.Component, "Transform"],
+                        [feng3d.PropertyClipPathItemType.Component, "Node3D"],
                     ];
                     var time = (frameData.index / md5AnimData.frameRate) * 1000;
                     setPropertyClipFrame(path, "position", time, translation.toArray(), "Vector3");

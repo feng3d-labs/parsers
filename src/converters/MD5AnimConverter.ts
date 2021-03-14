@@ -95,7 +95,7 @@ namespace feng3d
 
                     var path: PropertyClipPath = [
                         [PropertyClipPathItemType.Entity, hierarchy.name],
-                        [PropertyClipPathItemType.Component, "Transform"],
+                        [PropertyClipPathItemType.Component, "Node3D"],
                     ];
 
                     var time = (frameData.index / md5AnimData.frameRate) * 1000;
