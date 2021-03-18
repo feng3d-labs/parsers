@@ -39,13 +39,12 @@ namespace feng3d
                 var skinSkeleton = new SkinSkeletonTemp();
                 var geometry = this.createGeometry(md5MeshData.meshs[i], skeletonComponent, skinSkeleton);
 
-                var skeletonTransform = new Entity().addComponent(Node3D);
+                var skinnedModel = new Entity().addComponent(SkinnedMeshRenderer);
 
-                var skinnedModel = skeletonTransform.addComponent(SkinnedMeshRenderer);
                 skinnedModel.geometry = geometry;
                 skinnedModel.skinSkeleton = skinSkeleton;
 
-                node3d.addChild(skeletonTransform);
+                node3d.addChild(skinnedModel.node3d);
             }
 
             globalEmitter.emit("asset.parsed", node3d);

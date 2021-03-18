@@ -33,7 +33,7 @@ namespace feng3d.war3
 		//
 		//---------------------------------------
 
-		private meshs: Node3D[];
+		private meshs: SkinnedMeshRenderer[];
 		private skeletonComponent: SkeletonComponent;
 
 		getMesh()
@@ -41,19 +41,17 @@ namespace feng3d.war3
 			this.meshs = [];
 			this.meshs.length = this.geosets.length;
 
-			var container = serialization.setValue(new Entity(), { name: this.model.name }).addComponent(Node3D);
+			var container = serialization.setValue(new Entity(), { name: this.model.name }).addComponent(SkeletonComponent);
 
 			var skeletonjoints = createSkeleton(this);
-			this.skeletonComponent = container.addComponent(SkeletonComponent);
+			this.skeletonComponent = container;
 			this.skeletonComponent.joints = skeletonjoints;
 
 			for (var i: number = 0; i < this.geosets.length; i++)
 			{
 				var geoset: Geoset = this.geosets[i];
 
-				var mesh = this.meshs[i] = new Entity().addComponent(Node3D);
-				// var model = mesh.addComponent(Model);
-				var model = mesh.addComponent(SkinnedMeshRenderer);
+				var model = this.meshs[i] = new Entity().addComponent(SkinnedMeshRenderer);
 
 				var geometry: CustomGeometry = new CustomGeometry();
 				geometry.positions = geoset.Vertices;
@@ -91,7 +89,7 @@ namespace feng3d.war3
 				model.geometry = geometry;
 				model.skinSkeleton = skinSkeleton;
 
-				container.addChild(mesh);
+				container.node3d.addChild(model.node3d);
 			}
 
 			var animationclips = createAnimationClips(this);
@@ -100,10 +98,10 @@ namespace feng3d.war3
 			animation.animations = animationclips;
 
 			//
-			container.rx = 90;
-			container.sx = 0.01;
-			container.sy = 0.01;
-			container.sz = -0.01;
+			container.node3d.rx = 90;
+			container.node3d.sx = 0.01;
+			container.node3d.sy = 0.01;
+			container.node3d.sz = -0.01;
 			return container;
 		}
 
