@@ -529,7 +529,7 @@ declare namespace feng3d.war3 {
         pivotPoints: Vector3[];
         private meshs;
         private skeletonComponent;
-        getMesh(): Node3D;
+        getMesh(): Node3D<Component3DEventMap>;
         private Node3D;
     }
 }

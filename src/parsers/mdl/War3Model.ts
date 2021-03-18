@@ -100,10 +100,10 @@ namespace feng3d.war3
 			animation.animations = animationclips;
 
 			//
-			container.node3d.rx = 90;
-			container.node3d.sx = 0.01;
-			container.node3d.sy = 0.01;
-			container.node3d.sz = -0.01;
+			container.rx = 90;
+			container.sx = 0.01;
+			container.sy = 0.01;
+			container.sz = -0.01;
 			return container;
 		}
 
