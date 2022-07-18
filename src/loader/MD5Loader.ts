@@ -16,9 +16,9 @@ namespace feng3d
          * @param url   路径
          * @param completed 加载完成回调
          */
-        load(url: string, completed?: (node3d: Node3D) => void)
+        load(url: string, completed?: (gameObject: GameObject) => void)
         {
-            fs.readString(url, (err, content) =>
+            FS.fs.readString(url, (err, content) =>
             {
                 var md5MeshData = md5MeshParser.parse(content);
                 md5MeshData.name = pathUtils.getName(url);
@@ -33,7 +33,7 @@ namespace feng3d
          */
         loadAnim(url: string, completed?: (animationClip: AnimationClip) => void)
         {
-            fs.readString(url, (err, content) =>
+            FS.fs.readString(url, (err, content) =>
             {
                 var md5AnimData = md5AnimParser.parse(content);
                 md5AnimData.name = pathUtils.getName(url);

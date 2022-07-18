@@ -33,25 +33,27 @@ namespace feng3d.war3
 		//
 		//---------------------------------------
 
-		private meshs: SkinnedMeshRenderer[];
+		private meshs: GameObject[];
 		private skeletonComponent: SkeletonComponent;
 
-		getMesh()
+		getMesh(): GameObject
 		{
 			this.meshs = [];
 			this.meshs.length = this.geosets.length;
 
-			var container = serialization.setValue(new Entity(), { name: this.model.name }).addComponent(SkeletonComponent);
+			var container = serialization.setValue(new GameObject(), { name: this.model.name });
 
 			var skeletonjoints = createSkeleton(this);
-			this.skeletonComponent = container;
+			this.skeletonComponent = container.addComponent(SkeletonComponent);
 			this.skeletonComponent.joints = skeletonjoints;
 
 			for (var i: number = 0; i < this.geosets.length; i++)
 			{
 				var geoset: Geoset = this.geosets[i];
 
-				var model = this.meshs[i] = new Entity().addComponent(SkinnedMeshRenderer);
+				var mesh: GameObject = this.meshs[i] = new GameObject();
+				// var model = mesh.addComponent("Model");
+				var model = mesh.addComponent(SkinnedMeshRenderer);
 
 				var geometry: CustomGeometry = new CustomGeometry();
 				geometry.positions = geoset.Vertices;
@@ -72,7 +74,7 @@ namespace feng3d.war3
 				var material: Material = this.materials[geoset.MaterialID];
 				if (!material.material)
 				{
-					var fBitmap: FBitmap = this.Node3D(material);
+					var fBitmap: FBitmap = this.getFBitmap(material);
 					var image: string = fBitmap.image;
 					// if (image && image.length > 0)
 					// {
@@ -89,7 +91,7 @@ namespace feng3d.war3
 				model.geometry = geometry;
 				model.skinSkeleton = skinSkeleton;
 
-				container.node3d.addChild(model.node3d);
+				container.addChild(mesh);
 			}
 
 			var animationclips = createAnimationClips(this);
@@ -98,14 +100,14 @@ namespace feng3d.war3
 			animation.animations = animationclips;
 
 			//
-			container.node3d.rx = 90;
-			container.node3d.sx = 0.01;
-			container.node3d.sy = 0.01;
-			container.node3d.sz = -0.01;
+			container.transform.rx = 90;
+			container.transform.sx = 0.01;
+			container.transform.sy = 0.01;
+			container.transform.sz = -0.01;
 			return container;
 		}
 
-		private Node3D(material: Material): FBitmap
+		private getFBitmap(material: Material): FBitmap
 		{
 			var TextureID = 0;
 			for (var i = 0; i < material.layers.length; i++)

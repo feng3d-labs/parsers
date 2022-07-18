@@ -30,7 +30,7 @@ namespace feng3d
                 translatePose(md5AnimData, md5AnimData.frame[i], animationClip);
             }
 
-            globalEmitter.emit("asset.parsed", animationClip);
+            globalEmitter.emit('asset.parsed', animationClip);
 
             completed && completed(animationClip);
 
@@ -94,13 +94,13 @@ namespace feng3d
                     eulers.scaleNumber(180 / Math.PI);
 
                     var path: PropertyClipPath = [
-                        [PropertyClipPathItemType.Entity, hierarchy.name],
-                        [PropertyClipPathItemType.Component, "Node3D"],
+                        [PropertyClipPathItemType.GameObject, hierarchy.name],
+                        [PropertyClipPathItemType.Component, 'Transform'],
                     ];
 
                     var time = (frameData.index / md5AnimData.frameRate) * 1000;
-                    setPropertyClipFrame(path, "position", time, translation.toArray(), "Vector3");
-                    setPropertyClipFrame(path, "orientation", time, orientation.toArray(), "Quaternion");
+                    setPropertyClipFrame(path, 'position', time, translation.toArray(), 'Vector3');
+                    setPropertyClipFrame(path, 'orientation', time, orientation.toArray(), 'Quaternion');
 
                 }
 
@@ -113,7 +113,7 @@ namespace feng3d
 
                 function getPropertyClip(path: PropertyClipPath, propertyName: string)
                 {
-                    var key = path.join("-") + propertyName;
+                    var key = path.join('-') + propertyName;
                     if (__chache__[key])
                         return __chache__[key];
                     if (!__chache__[key])

@@ -61,9 +61,9 @@ namespace feng3d.war3
 		getRotationItem(rotation: Rotation)
 		{
 			var quaternion = new Quaternion();
-			if (this.type == "DontInterp")
+			if (this.type == 'DontInterp')
 			{
-				quaternion.fromEulerAngles(rotation.value.x, rotation.value.y, rotation.value.z);
+				quaternion.fromEuler(rotation.value.x, rotation.value.y, rotation.value.z);
 			} else
 			{
 				quaternion.copy(rotation.value);
@@ -113,17 +113,17 @@ namespace feng3d.war3
 
 			switch (this.type)
 			{
-				case "DontInterp":
-					rotationQuaternion.fromEulerAngles(key1.value.x, key1.value.y, key1.value.z);
+				case 'DontInterp':
+					rotationQuaternion.fromEuler(key1.value.x, key1.value.y, key1.value.z);
 					break;
-				case "Linear":
+				case 'Linear':
 					q1 = key1.value.clone();
 					q2 = key2.value.clone();
 
 					q1.slerpTo(q2, Factor, rotationQuaternion);
 					break;
-				case "Hermite":
-				case "Bezier":
+				case 'Hermite':
+				case 'Bezier':
 					q1 = key1.value.clone();
 					q2 = key2.value.clone();
 
@@ -177,7 +177,7 @@ namespace feng3d.war3
 			var pTranslation = this.Translation.getTranslation(keyFrameTime);
 
 			var matrix = this.c_transformation;
-			matrix.appendScale(pScaling.x, pScaling.y, pScaling.z).append(pRotation.toMatrix());
+			matrix.appendScale(pScaling.x, pScaling.y, pScaling.z).append(pRotation.toMatrix(new Matrix4x4()));
 			//设置旋转缩放中心
 			matrix.prependTranslation(-this.pivotPoint.x, - this.pivotPoint.y, - this.pivotPoint.z);
 			matrix.appendTranslation(this.pivotPoint.x, this.pivotPoint.y, this.pivotPoint.z);
@@ -189,8 +189,8 @@ namespace feng3d.war3
 		buildAnimationclip(animationclip: AnimationClip, __chache__: { [key: string]: PropertyClip }, start: number, end: number)
 		{
 			var path: PropertyClipPath = [
-				[PropertyClipPathItemType.Entity, this.name],
-				[PropertyClipPathItemType.Component, "Node3D"],
+				[PropertyClipPathItemType.GameObject, this.name],
+				[PropertyClipPathItemType.Component, 'Transform'],
 			];
 
 			if (this.Scaling.scalings.length > 0)
@@ -201,7 +201,7 @@ namespace feng3d.war3
 					var scaling = scalings[i];
 					if (start <= scaling.time && scaling.time <= end)
 					{
-						setPropertyClipFrame(path, "scale", scaling.time - start, scaling.value.toArray(), "Vector3");
+						setPropertyClipFrame(path, 'scale', scaling.time - start, scaling.value.toArray(), 'Vector3');
 					}
 				}
 			}
@@ -214,7 +214,7 @@ namespace feng3d.war3
 					var translation = translations[i];
 					if (start <= translation.time && translation.time <= end)
 					{
-						setPropertyClipFrame(path, "position", translation.time - start, translation.value.addTo(this.pivotPoint).toArray(), "Vector3");
+						setPropertyClipFrame(path, 'position', translation.time - start, translation.value.addTo(this.pivotPoint).toArray(), 'Vector3');
 					}
 				}
 			}
@@ -227,7 +227,7 @@ namespace feng3d.war3
 					var rotation = rotations[i];
 					if (start <= rotation.time && rotation.time <= end)
 					{
-						setPropertyClipFrame(path, "orientation", rotation.time - start, this.Rotation.getRotationItem(rotation).toArray(), "Quaternion");
+						setPropertyClipFrame(path, 'orientation', rotation.time - start, this.Rotation.getRotationItem(rotation).toArray(), 'Quaternion');
 					}
 				}
 			}
@@ -241,7 +241,7 @@ namespace feng3d.war3
 
 			function getPropertyClip(path: PropertyClipPath, propertyName: string)
 			{
-				var key = path.join("-") + propertyName;
+				var key = path.join('-') + propertyName;
 				if (__chache__[key])
 					return __chache__[key];
 				if (!__chache__[key])
@@ -263,7 +263,7 @@ namespace feng3d.war3
 			var pRotation = this.Rotation.getRotation(time);
 			var pTranslation = this.Translation.getTranslation(time);
 
-			var matrix = new Matrix4x4().appendScale(pScaling.x, pScaling.y, pScaling.z).append(pRotation.toMatrix());
+			var matrix = new Matrix4x4().appendScale(pScaling.x, pScaling.y, pScaling.z).append(pRotation.toMatrix(new Matrix4x4()));
 			//平移
 			matrix.appendTranslation(pTranslation.x + this.pivotPoint.x, pTranslation.y + this.pivotPoint.y, pTranslation.z + this.pivotPoint.z)
 			//
@@ -321,10 +321,10 @@ namespace feng3d.war3
 
 			switch (this.type)
 			{
-				case "DontInterp":
+				case 'DontInterp':
 					scalingVector.copy(key1.value);
 					break;
-				case "Linear":
+				case 'Linear':
 					tempVec = key1.value.clone();
 					tempVec.scaleNumber(InverseFactor);
 					scalingVector.add(tempVec);
@@ -333,7 +333,7 @@ namespace feng3d.war3
 					tempVec.scaleNumber(Factor);
 					scalingVector.add(tempVec);
 					break;
-				case "Hermite":
+				case 'Hermite':
 					FactorTimesTwo = Factor * Factor;
 
 					Factor1 = FactorTimesTwo * (2.0 * Factor - 3.0) + 1;
@@ -358,7 +358,7 @@ namespace feng3d.war3
 					scalingVector.add(tempVec);
 					break;
 
-				case "Bezier":
+				case 'Bezier':
 					FactorTimesTwo = Factor * Factor;
 					InverseFactorTimesTwo = InverseFactor * InverseFactor;
 
@@ -439,10 +439,10 @@ namespace feng3d.war3
 
 			switch (this.type)
 			{
-				case "DontInterp":
+				case 'DontInterp':
 					TranslationVector.copy(key1.value);
 					break;
-				case "Linear":
+				case 'Linear':
 					tempVec = key1.value.clone();
 					tempVec.scaleNumber(InverseFactor);
 					TranslationVector.add(tempVec);
@@ -451,7 +451,7 @@ namespace feng3d.war3
 					tempVec.scaleNumber(Factor);
 					TranslationVector.add(tempVec);
 					break;
-				case "Hermite":
+				case 'Hermite':
 					FactorTimesTwo = Factor * Factor;
 
 					Factor1 = FactorTimesTwo * (2.0 * Factor - 3.0) + 1;
@@ -476,7 +476,7 @@ namespace feng3d.war3
 					TranslationVector.add(tempVec);
 					break;
 
-				case "Bezier":
+				case 'Bezier':
 					FactorTimesTwo = Factor * Factor;
 					InverseFactorTimesTwo = InverseFactor * InverseFactor;
 

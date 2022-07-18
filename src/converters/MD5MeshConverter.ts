@@ -16,22 +16,20 @@ namespace feng3d
          * @param md5MeshData MD5模型数据
          * @param completed 转换完成回调
          */
-        convert(md5MeshData: MD5MeshData, completed?: (node3d: Node3D) => void)
+        convert(md5MeshData: MD5MeshData, completed?: (gameObject: GameObject) => void)
         {
-            var node3d = new Entity().addComponent(Node3D, (component) =>
-            {
-                component.entity.name = md5MeshData.name;
-            });
-            node3d.addComponent(Animation);
-            node3d.rx = -90;
+            var gameObject = new GameObject();
+            gameObject.name = md5MeshData.name;
+            gameObject.addComponent(Animation);
+            gameObject.transform.rx = -90;
 
             //顶点最大关节关联数
             var _maxJointCount = this.calculateMaxJointCount(md5MeshData);
-            console.assert(_maxJointCount <= 8, "顶点最大关节关联数最多支持8个");
+            console.assert(_maxJointCount <= 8, '顶点最大关节关联数最多支持8个');
 
             var skeletonjoints = this.createSkeleton(md5MeshData.joints);
 
-            var skeletonComponent = node3d.addComponent(SkeletonComponent);
+            var skeletonComponent = gameObject.addComponent(SkeletonComponent);
             skeletonComponent.joints = skeletonjoints;
 
             for (var i = 0; i < md5MeshData.meshs.length; i++)
@@ -39,16 +37,17 @@ namespace feng3d
                 var skinSkeleton = new SkinSkeletonTemp();
                 var geometry = this.createGeometry(md5MeshData.meshs[i], skeletonComponent, skinSkeleton);
 
-                var skinnedModel = new Entity().addComponent(SkinnedMeshRenderer);
+                var skeletonGameObject = new GameObject();
 
+                var skinnedModel = skeletonGameObject.addComponent(SkinnedMeshRenderer);
                 skinnedModel.geometry = geometry;
                 skinnedModel.skinSkeleton = skinSkeleton;
 
-                node3d.addChild(skinnedModel.node3d);
+                gameObject.addChild(skeletonGameObject);
             }
 
-            globalEmitter.emit("asset.parsed", node3d);
-            completed && completed(node3d);
+            globalEmitter.emit('asset.parsed', gameObject);
+            completed && completed(gameObject);
         }
 
         /**

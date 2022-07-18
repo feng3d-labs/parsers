@@ -12,10 +12,36 @@
             "DOM"
         ],
         "outFile": "./dist/index.js",
-        "types": [
-            "feng3d"
-        ]
     },
+    "references": [
+        {
+            "path": "../event"
+        },
+        {
+            "path": "../polyfill"
+        },
+        {
+            "path": "../objectview"
+        },
+        {
+            "path": "../watcher"
+        },
+        {
+            "path": "../serialization"
+        },
+        {
+            "path": "../math"
+        },
+        {
+            "path": "../filesystem"
+        },
+        {
+            "path": "../renderer"
+        },
+        {
+            "path": "../core"
+        },
+    ],
     "files": [
         // 模型解析
         "src/parsers/OBJParser.ts",

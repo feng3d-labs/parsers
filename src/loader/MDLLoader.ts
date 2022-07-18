@@ -15,21 +15,18 @@ namespace feng3d
          * @param mdlurl MDL模型路径
          * @param callback 加载完成回调
          */
-        load(mdlurl: string, callback?: (node3d: Node3D) => void)
+        load(mdlurl: string, callback?: (gameObject: GameObject) => void)
         {
-            fs.readString(mdlurl, (err, content) =>
+            FS.fs.readString(mdlurl, (err, content) =>
             {
                 war3.mdlParser.parse(content, (war3Model) =>
                 {
                     var showMesh = war3Model.getMesh();
 
-                    var node3d = serialization.setValue(new Entity(), { name: pathUtils.getName(mdlurl) }).addComponent(Node3D, (node3d) =>
-                    {
-                        node3d.children = [showMesh];
-                    });
+                    var gameObject = serialization.setValue(new GameObject(), { name: pathUtils.getName(mdlurl), children: <any>[showMesh] })
 
-                    globalEmitter.emit("asset.parsed", node3d);
-                    callback && callback(node3d);
+                    globalEmitter.emit('asset.parsed', gameObject);
+                    callback && callback(gameObject);
                 });
             });
         }

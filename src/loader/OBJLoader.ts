@@ -14,14 +14,14 @@ namespace feng3d
          * 加载资源
          * @param url   路径
          */
-        load(url: string, completed?: (transform: Node3D) => void)
+        load(url: string, completed?: (gameObject: GameObject) => void)
         {
-            var root = url.substring(0, url.lastIndexOf("/") + 1);
+            var root = url.substring(0, url.lastIndexOf('/') + 1);
 
-            fs.readString(url, (err, content) =>
+            FS.fs.readString(url, (err, content) =>
             {
                 var objData = objParser.parser(content);
-                objData.name = pathUtils.getName(url);
+                objData.name = feng3d.pathUtils.getName(url);
                 var mtl = objData.mtl;
                 if (mtl)
                 {
