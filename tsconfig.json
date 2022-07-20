@@ -15,9 +15,6 @@
     },
     "references": [
         {
-            "path": "../event"
-        },
-        {
             "path": "../polyfill"
         },
         {
@@ -43,6 +40,8 @@
         },
     ],
     "files": [
+        //
+        "../event/index.d.ts",
         // 模型解析
         "src/parsers/OBJParser.ts",
         "src/parsers/MTLParser.ts",
