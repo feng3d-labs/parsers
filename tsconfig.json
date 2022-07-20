@@ -15,9 +15,6 @@
     },
     "references": [
         {
-            "path": "../serialization"
-        },
-        {
             "path": "../math"
         },
         {
@@ -36,6 +33,7 @@
         "../polyfill/index.d.ts",
         "../objectview/index.d.ts",
         "../watcher/index.d.ts",
+        "../serialization/index.d.ts",
         // 模型解析
         "src/parsers/OBJParser.ts",
         "src/parsers/MTLParser.ts",
