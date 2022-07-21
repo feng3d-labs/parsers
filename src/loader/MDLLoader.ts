@@ -1,36 +1,37 @@
-namespace feng3d
+import { GameObject } from '@feng3d/core';
+import { globalEmitter } from '@feng3d/event';
+import { FS, pathUtils } from '@feng3d/filesystem';
+import { serialization } from '../../../serialization/dist';
+import { mdlParser } from '../parsers/MDLParser';
+
+/**
+ * MDL模型加载器
+ */
+export class MDLLoader
 {
     /**
-     * MDL模型加载器
+     * 加载MDL模型
+     * @param mdlurl MDL模型路径
+     * @param callback 加载完成回调
      */
-    export var mdlLoader: MDLLoader;
-
-    /**
-     * MDL模型加载器
-     */
-    export class MDLLoader
+    load(mdlurl: string, callback?: (gameObject: GameObject) => void)
     {
-        /**
-         * 加载MDL模型
-         * @param mdlurl MDL模型路径
-         * @param callback 加载完成回调
-         */
-        load(mdlurl: string, callback?: (gameObject: GameObject) => void)
+        FS.fs.readString(mdlurl, (_err, content) =>
         {
-            FS.fs.readString(mdlurl, (err, content) =>
+            mdlParser.parse(content, (war3Model: { getMesh: () => any; }) =>
             {
-                war3.mdlParser.parse(content, (war3Model) =>
-                {
-                    var showMesh = war3Model.getMesh();
+                const showMesh = war3Model.getMesh();
 
-                    var gameObject = serialization.setValue(new GameObject(), { name: pathUtils.getName(mdlurl), children: <any>[showMesh] })
+                const gameObject = serialization.setValue(new GameObject(), { name: pathUtils.getName(mdlurl), children: <any>[showMesh] });
 
-                    globalEmitter.emit('asset.parsed', gameObject);
-                    callback && callback(gameObject);
-                });
+                globalEmitter.emit('asset.parsed', gameObject);
+                callback && callback(gameObject);
             });
-        }
+        });
     }
-
-    mdlLoader = new MDLLoader();
 }
+
+/**
+ * MDL模型加载器
+ */
+export const mdlLoader = new MDLLoader();
