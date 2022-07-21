@@ -1,0 +1,8 @@
+{
+    "name": "@feng3d/parsers",
+    "entryPoints": [
+        "src/index.ts"
+    ],
+    "sourcefile-url-prefix": "https://gitlab.com/feng3d/parsers/tree/master/src/",
+    "out": "public"
+}
