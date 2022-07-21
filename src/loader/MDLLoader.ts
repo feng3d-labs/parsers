@@ -1,7 +1,7 @@
 import { GameObject } from '@feng3d/core';
 import { globalEmitter } from '@feng3d/event';
 import { FS, pathUtils } from '@feng3d/filesystem';
-import { serialization } from '../../../serialization/dist';
+import { serialization } from '@feng3d/serialization';
 import { mdlParser } from '../parsers/MDLParser';
 
 /**

@@ -2,7 +2,7 @@ import { Animation, AnimationClip, CustomGeometry, GameObject, geometryUtils, Ma
 import { globalEmitter } from '@feng3d/event';
 import { Matrix4x4, Vector3 } from '@feng3d/math';
 import { CullFace } from '@feng3d/renderer';
-import { serialization } from '../../../../serialization/dist';
+import { serialization } from '@feng3d/serialization';
 import { AnimInfo, BoneObject, FBitmap, Geoset, GeosetAnim, Globalsequences, Material, Model } from './MdlModel';
 
 /**

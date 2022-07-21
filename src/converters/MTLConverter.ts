@@ -1,6 +1,6 @@
 import { Material } from '@feng3d/core';
 import { globalEmitter } from '@feng3d/event';
-import { serialization } from '../../../serialization/dist';
+import { serialization } from '@feng3d/serialization';
 import { Mtl_Mtl } from '../parsers/MTLParser';
 
 /**

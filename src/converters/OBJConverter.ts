@@ -1,6 +1,6 @@
 import { CustomGeometry, GameObject, Material, Renderable } from '@feng3d/core';
 import { globalEmitter } from '@feng3d/event';
-import { serialization } from '../../../serialization/dist';
+import { serialization } from '@feng3d/serialization';
 import { OBJ_Face, OBJ_OBJ, OBJ_OBJData, OBJ_SubOBJ } from '../parsers/OBJParser';
 
 /**

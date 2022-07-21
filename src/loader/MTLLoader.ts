@@ -1,5 +1,5 @@
 import { Material } from '@feng3d/core';
-import { FS } from '../../../filesystem/dist';
+import { FS } from '@feng3d/filesystem';
 import { mtlConverter } from '../converters/MTLConverter';
 import { mtlParser } from '../parsers/MTLParser';
 
