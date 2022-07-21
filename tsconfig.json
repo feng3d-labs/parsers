@@ -15,9 +15,6 @@
     },
     "references": [
         {
-            "path": "../filesystem"
-        },
-        {
             "path": "../renderer"
         },
         {
@@ -32,6 +29,7 @@
         "../watcher/index.d.ts",
         "../serialization/index.d.ts",
         "../math/index.d.ts",
+        "../filesystem/index.d.ts",
         // 模型解析
         "src/parsers/OBJParser.ts",
         "src/parsers/MTLParser.ts",
