@@ -91,7 +91,7 @@ export class MD5MeshConverter
         for (let i = start; i < end; ++i)
         {
             weight = weights[i].bias;
-            if (weight == 0)
+            if (weight === 0)
             { ++count; }
         }
 

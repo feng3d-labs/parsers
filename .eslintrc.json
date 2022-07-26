@@ -144,7 +144,7 @@
         "no-void": 1,
         "no-warning-comments": 0,
         "no-with": 1,
-        "radix": 1,
+        "radix": 0,
         "vars-on-top": 0,
         "wrap-iife": [
             1,
@@ -200,7 +200,7 @@
             }
         ],
         "camelcase": [
-            1,
+            0,
             {
                 "properties": "always"
             }

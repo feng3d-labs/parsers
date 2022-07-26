@@ -165,10 +165,10 @@ export class BoneObject
 	pivotPoint: Vector3;
 
 	/** 当前对象变换矩阵 */
-	c_transformation = new Matrix4x4();
+	transformation = new Matrix4x4();
 
 	/** 当前全局变换矩阵 */
-	c_globalTransformation = new Matrix4x4();
+	globalTransformation = new Matrix4x4();
 
 	calculateTransformation(keyFrameTime: number): void
 	{
@@ -177,7 +177,7 @@ export class BoneObject
 		const pRotation = this.Rotation.getRotation(keyFrameTime);
 		const pTranslation = this.Translation.getTranslation(keyFrameTime);
 
-		const matrix = this.c_transformation;
+		const matrix = this.transformation;
 		matrix.appendScale(pScaling.x, pScaling.y, pScaling.z).append(pRotation.toMatrix(new Matrix4x4()));
 		// 设置旋转缩放中心
 		matrix.prependTranslation(-this.pivotPoint.x, -this.pivotPoint.y, -this.pivotPoint.z);
